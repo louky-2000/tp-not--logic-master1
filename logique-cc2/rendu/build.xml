@@ -1,0 +1,93 @@
+<project name="Logique-" default="all" basedir=".">
+    
+    <!-- ==================== Properties =========================== -->
+    <property name="app.name" value="Modale" />
+    <property name="app.version" value="1.0"/>
+    <property name="app.fullname" value="${app.name}-${app.version}"/>
+    <property name="build.home" value="${basedir}/build"/>
+    <property name="dist.home" value="${basedir}/dist"/>
+    <property name="docs.home" value="${basedir}/docs"/>
+    <property name="src.home" value="${basedir}/src"/>
+    <property name="mainClass-tp1" value="main.Main"/>
+    <property name="mainClass-tp2" value="main.MainTp2"/>
+    <property name="javac.encoding" value="UTF-8"/>
+   
+    <!-- ==================== Compile options =========================== -->
+   
+    <property name="compile.debug"       value="true"/>
+    <property name="compile.deprecation" value="false"/>
+    <property name="compile.optimize"    value="true"/>
+
+    <!-- ==================== All Target ====================================== -->
+   
+    <target name="all" depends="clean,prepare,compile,jarFiles,javadoc" description="Clean build and dist directories, then compile"/>
+  
+    <!-- ==================== Clean Target ==================================== -->
+   
+    <target name="clean" description="Delete old build and dist directories">
+        <delete dir="${build.home}"/>
+        <delete dir="${dist.home}"/>
+        <delete dir="${docs.home}"/>
+    </target>
+
+    <!-- ==================== Prepare Target ================================== -->
+
+    <target name="prepare">
+        <mkdir dir="${build.home}"/>
+        <mkdir dir="${dist.home}"/>
+        <mkdir dir="${docs.home}"/>
+    </target>
+
+    <!-- ==================== Compile Target ================================== -->
+   
+    <target name="compile" depends="prepare" description="Compile Java sources">
+
+        <javac srcdir="${src.home}"
+            includes="**/*.java"
+            destdir="${build.home}"
+            debug="${compile.debug}"
+            deprecation="${compile.deprecation}"
+            optimize="${compile.optimize}"
+            encoding="${javac.encoding}"
+            includeantruntime="false">
+        </javac>
+    </target>
+    
+    <!-- ==================== Dist Target ===================================== -->
+
+    <target name="jarFiles" depends="compile" description="Create binary distribution">	
+        <jar jarfile="${dist.home}/${app.fullname}-tp1.jar"
+            basedir="${build.home}">
+            <manifest>
+                <attribute name="Main-Class" value="${mainClass-tp1}"/>
+            </manifest>
+        </jar>
+
+        <jar jarfile="${dist.home}/${app.fullname}-tp2.jar"
+            basedir="${build.home}">
+            <manifest>
+                <attribute name="Main-Class" value="${mainClass-tp2}"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <!-- ==================== Run Target ================================== -->
+    <target name="tp1" depends="jarFiles">
+        <java jar="${dist.home}/${app.fullname}-tp1.jar" fork="true" />
+    </target>
+
+    <target name="tp2" depends="jarFiles">
+        <java jar="${dist.home}/${app.fullname}-tp2.jar" fork="true" />
+    </target>
+
+    <!-- ==================== Javadoc Target ================================== -->
+
+    <target name="javadoc" description="Create Javadoc API documentation">
+        <javadoc 
+            sourcepath="${src.home}" 
+            destdir="${docs.home}" 
+            packagenames="*">
+        </javadoc>
+    </target>
+
+</project>

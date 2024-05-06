@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"main"},{"l":"operateur_binaires"},{"l":"operateur_unaires"},{"l":"rules"}];updateSearchResults();
